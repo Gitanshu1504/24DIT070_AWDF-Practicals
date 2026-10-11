@@ -55,7 +55,7 @@ test("GET /tasks returns the authenticated user's tasks", async () => {
         .get("/tasks")
         .set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body).toEqual(
         expect.arrayContaining([
             expect.objectContaining({
