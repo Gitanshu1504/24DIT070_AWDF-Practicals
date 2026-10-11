@@ -19,7 +19,7 @@ This practical adds a GitHub Actions workflow at the repository-level `.github/w
 
    The test registers and authenticates a temporary user, creates a task, and verifies `GET /tasks` returns `200` with that user's task. It uses a dedicated `task_management_practical12_test` database by default and removes the created test data afterwards.
 
-   The deliberate failure exercise was also checked locally: changing the expected GET status from `200` to `201` makes Jest fail with `Expected: 201 / Received: 200`. Restoring `200` makes the test pass.
+   The deliberate failure exercise was checked locally and in GitHub Actions: changing the expected GET status from `200` to `201` makes Jest fail with `Expected: 201 / Received: 200`. Restoring `200` makes the test pass.
 
 ## CI workflow
 
@@ -27,17 +27,16 @@ The workflow uses Node.js 20 and a MongoDB 7 service container. It runs from `Pr
 
 GitHub only discovers Actions workflows under `.github/workflows` at the repository root; do not move the workflow into this practical's folder.
 
-## Demonstrate a failed run and recovery
+## Failed and passing Actions runs
 
-To reproduce the red-X/green-check exercise after the baseline passing workflow is on GitHub:
+The workflow was pushed to `main` with the deliberate `201` expectation first, then fixed in the next commit:
 
-1. In `backend/tests/tasks.test.js`, deliberately change the successful list request assertion from `expect(response.status).toBe(200)` to `expect(response.status).toBe(201)`.
-2. Run `npm test` locally to see the assertion fail, then commit and push that temporary broken expectation to `main`. Open the repository's **Actions** tab and wait for the `Backend tests` job to fail.
-3. Capture a screenshot of the failed run summary and failed assertion for the lab journal.
-4. Restore the expected value to `200`, run `npm test`, commit, and push the fix to `main`.
-5. Capture the successful run summary showing the green check.
+| Demonstration | Commit | GitHub Actions result |
+| --- | --- | --- |
+| Deliberately incorrect expected status (`201`; API returned `200`) | `743a510` | [Failed run #1](https://github.com/Gitanshu1504/24DIT070_AWDF-Practicals/actions/runs/38128448973) |
+| Corrected expected status (`200`) | `29925a8` | [Passing run #2](https://github.com/Gitanshu1504/24DIT070_AWDF-Practicals/actions/runs/38128491735) |
 
-Do not leave the intentionally failing assertion in the final branch. Save screenshots from the GitHub Actions pages in the lab journal; their run URLs and timestamps are specific to the repository.
+The failed run showed a red X on `Backend tests`; the corrected run completed with a green check. Screenshots of both Actions run summaries are included with the practical demonstration. Do not leave the intentionally failing assertion in the final branch.
 
 ## Test scope and endpoints
 
